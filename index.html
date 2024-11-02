@@ -2,69 +2,66 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Игра с Волком и Яйцами</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Игра "Ну, погоди!"</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #f0f0f0;
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+        }
+        body, html {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #f0f0f0;
             font-family: Arial, sans-serif;
         }
-
         #game-area {
             position: relative;
-            width: 400px;
-            height: 600px;
-            border: 2px solid #333;
+            width: 100vw;
+            height: 100vh;
+            background: #e5e5e5;
             overflow: hidden;
-            background: #fff;
         }
-
-        .wolf {
-            width: 50px;
+        #wolf {
             position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
+            bottom: 10%;
+            width: 15%;
+            height: auto;
+            transition: left 0.1s ease;
         }
-
         .egg {
-            width: 30px;
             position: absolute;
-            transition: top 0.5s linear; /* Замедление падения */
+            width: 5%;
+            height: auto;
         }
-
-        #controls {
-            margin-top: 20px;
-        }
-
-        button {
-            margin: 5px;
+        #start-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 1.2rem;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
-        }
-
-        #score {
-            font-size: 24px;
-            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-
-    <h1>Игра с Волком и Яйцами</h1>
-    <div id="game-area"></div>
-    <div id="controls">
-        <button id="startGame">Начать Игра A</button>
-        <button id="startGameB">Начать Игра B</button>
+    <div id="game-area">
+        <img src="wolf.png" id="wolf" alt="Волк">
+        <button id="start-button">Старт</button>
     </div>
-    <div id="score">Очки: 0</div>
 
     <script src="game.js"></script>
 </body>
 </html>
+
