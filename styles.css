@@ -16,7 +16,7 @@ body, html {
     overflow: hidden;
 }
 
-.wolf {
+#wolf {
     width: 80px;
     height: 80px;
     position: absolute;
