@@ -1,21 +1,25 @@
 let wolf, eggs = [], score = 0, missed = 0, eggFallInterval, eggSpawnInterval;
-const eggSpawnRate = 1500; // Задержка между появлением яиц в миллисекундах
-const eggFallSpeed = 4; // Скорость падения яиц
+const eggSpawnRate = 2000; // Задержка между появлением яиц (уменьшено)
+const eggFallSpeed = 2; // Скорость падения яиц (уменьшено)
 
 document.addEventListener('DOMContentLoaded', function () {
     wolf = document.getElementById('wolf');
     const scoreDisplay = document.getElementById('score');
-    const startButton = document.getElementById('startButton');
+    const missedDisplay = document.createElement('div');
+    missedDisplay.id = 'missed';
+    missedDisplay.textContent = `Пропущено: ${missed}`;
+    document.getElementById('gameContainer').appendChild(missedDisplay);
 
+    const startButton = document.getElementById('startButton');
     startButton.addEventListener('click', startGame);
 
     function startGame() {
         score = 0;
         missed = 0;
+        updateScore();
+        updateMissed();
         eggs.forEach(egg => egg.remove());
         eggs = [];
-        updateScore();
-
         startButton.style.display = 'none';
 
         eggSpawnInterval = setInterval(spawnEgg, eggSpawnRate);
@@ -51,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 eggs.splice(index, 1);
             } else if (eggTop > window.innerHeight) {
                 missed++;
+                updateMissed();
                 egg.remove();
                 eggs.splice(index, 1);
 
@@ -64,6 +69,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateScore() {
         scoreDisplay.textContent = `Счёт: ${score}`;
+    }
+
+    function updateMissed() {
+        missedDisplay.textContent = `Пропущено: ${missed}`;
     }
 
     function endGame() {
