@@ -5,6 +5,8 @@ let gameMode = 'A'; // Игра A по умолчанию
 const gameArea = document.getElementById('game-area');
 const scoreDisplay = document.getElementById('score');
 let wolfPosition = 1; // Позиция Волка (0 - левый, 1 - средний, 2 - правый, 3 - самый правый)
+const wolfWidth = 80; // Ширина изображения Волка
+const eggWidth = 50; // Ширина яйца
 
 document.getElementById('startGame').addEventListener('click', () => {
     startGame('A');
@@ -22,6 +24,10 @@ document.addEventListener('keydown', (event) => {
         moveWolf(1); // Вправо
     }
 });
+
+// Для управления с помощью кнопок
+document.getElementById('leftButton').addEventListener('click', () => moveWolf(-1));
+document.getElementById('rightButton').addEventListener('click', () => moveWolf(1));
 
 function startGame(mode) {
     gameMode = mode;
@@ -47,6 +53,7 @@ function createWolf() {
     wolf.alt = 'Волк';
     wolf.className = 'wolf';
     wolf.style.left = '120px'; // Начальная позиция
+    wolf.style.position = 'absolute'; // Позиционируем абсолютно
     gameArea.appendChild(wolf);
 }
 
@@ -59,7 +66,7 @@ function moveWolf(direction) {
         wolfPosition++; // Двигаем вправо
     }
     // Обновляем позицию Волка на экране
-    wolf.style.left = `${(wolfPosition * 100) + 20}px`;
+    wolf.style.left = `${(wolfPosition * 100) + 20}px`; // Измените значение, если изменится ширина волка
 }
 
 function createEgg() {
@@ -67,6 +74,7 @@ function createEgg() {
     egg.src = 'images/egg.png'; // Укажите путь к изображению яйца
     egg.alt = 'Яйцо';
     egg.className = 'egg';
+    egg.style.position = 'absolute'; // Позиционируем абсолютно
     gameArea.appendChild(egg);
     return egg;
 }
@@ -81,11 +89,28 @@ function dropEgg() {
         const topPosition = parseInt(egg.style.top);
         if (topPosition < 550) { // Если яйцо не достигло дна
             egg.style.top = `${topPosition + 5}px`; // Падает на 5 пикселей
+            checkCatch(egg); // Проверяем, ловит ли Волк яйцо
         } else {
             clearInterval(eggFallInterval);
             handleEggDrop(egg);
         }
     }, 100);
+}
+
+function checkCatch(egg) {
+    const wolf = document.querySelector('.wolf');
+    const wolfLeft = parseInt(wolf.style.left);
+    const wolfRight = wolfLeft + wolfWidth;
+
+    const eggLeft = parseInt(egg.style.left);
+    const eggRight = eggLeft + eggWidth;
+
+    // Проверяем, пересекаются ли Волк и яйцо
+    if (egg.style.top === '550px' && (eggLeft < wolfRight && eggRight > wolfLeft)) {
+        score += 1; // Увеличиваем очки за пойманное яйцо
+        updateScore();
+        egg.remove(); // Удаляем яйцо
+    }
 }
 
 function handleEggDrop(egg) {
@@ -102,5 +127,3 @@ function handleEggDrop(egg) {
 function updateScore() {
     scoreDisplay.textContent = `Очки: ${score} | Штрафные очки: ${penaltyScore}`;
 }
-
-// Для дальнейшего развития игры добавьте логику по ловле яиц, взаимодействию с Волком и обработку штрафов.
