@@ -1,6 +1,6 @@
 let wolf, eggs = [], score = 0, missed = 0, eggFallInterval, eggSpawnInterval;
-let eggFallSpeed = 1;
-const eggFallSpeedIncrement = 0.2; // Прирост скорости каждые 10 очков
+let eggFallSpeed = 0.5;
+const eggFallSpeedIncrement = 0.05; // Минимальный прирост скорости падения каждые 10 очков
 const eggSpawnRate = 2000; // Интервал появления яиц
 const initialEggFallSpeed = 0.5; // Начальная скорость падения
 
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Добавляем поддержку касания на мобильных устройствах
+    // Управление касанием на мобильных устройствах
     document.getElementById('gameContainer').addEventListener('touchmove', (event) => {
         const touchX = event.touches[0].clientX;
         moveWolfTo(touchX - wolf.offsetWidth / 2);
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
         wolf.style.left = wolfLeft + 'px';
     }
 
-    // Функция для перемещения волка синхронно с пальцем
+    // Функция для перемещения волка синхронно с касанием
     function moveWolfTo(positionX) {
         if (positionX < 0) positionX = 0;
         if (positionX > window.innerWidth - wolf.offsetWidth) {
