@@ -1,8 +1,8 @@
 let wolf, eggs = [], score = 0, missed = 0, eggFallInterval, eggSpawnInterval;
 let eggFallSpeed = 1;
-const eggFallSpeedIncrement = 0.1;
-const eggSpawnRate = 2000;
-const wolfMoveDistance = 15;
+const eggFallSpeedIncrement = 0.2; // Прирост скорости каждые 10 очков
+const eggSpawnRate = 2000; // Интервал появления яиц
+const initialEggFallSpeed = 0.5; // Начальная скорость падения
 
 document.addEventListener('DOMContentLoaded', function () {
     wolf = document.getElementById('wolf');
@@ -12,34 +12,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const rightControl = document.getElementById('rightControl');
 
     startButton.addEventListener('click', startGame);
-    leftControl.addEventListener('click', () => moveWolf(-wolfMoveDistance));
-    rightControl.addEventListener('click', () => moveWolf(wolfMoveDistance));
+    leftControl.addEventListener('click', () => moveWolf(-15));
+    rightControl.addEventListener('click', () => moveWolf(15));
 
     document.addEventListener('keydown', function (event) {
         if (event.key === 'ArrowLeft') {
-            moveWolf(-wolfMoveDistance);
+            moveWolf(-15);
         } else if (event.key === 'ArrowRight') {
-            moveWolf(wolfMoveDistance);
+            moveWolf(15);
         }
     });
 
-    // Добавляем управление пальцем на мобильных устройствах
-    let touchStartX = 0;
-    wolf.addEventListener('touchstart', (event) => {
-        touchStartX = event.touches[0].clientX;
-    });
-
-    wolf.addEventListener('touchmove', (event) => {
-        const touchEndX = event.touches[0].clientX;
-        const distance = touchEndX - touchStartX;
-        moveWolf(distance * 0.1); // Уменьшаем чувствительность
-        touchStartX = touchEndX;
+    // Добавляем поддержку касания на мобильных устройствах
+    document.getElementById('gameContainer').addEventListener('touchmove', (event) => {
+        const touchX = event.touches[0].clientX;
+        moveWolfTo(touchX - wolf.offsetWidth / 2);
     });
 
     function startGame() {
         score = 0;
         missed = 0;
-        eggFallSpeed = 1; // Сброс начальной скорости яиц
+        eggFallSpeed = initialEggFallSpeed;
         updateScore();
         eggs.forEach(egg => egg.remove());
         eggs = [];
@@ -66,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const wolfRect = wolf.getBoundingClientRect();
             const eggRect = egg.getBoundingClientRect();
 
+            // Проверка на сбор яйца
             if (
                 eggRect.bottom >= wolfRect.top &&
                 eggRect.left >= wolfRect.left &&
@@ -85,8 +79,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         });
-        
-        eggFallSpeed += eggFallSpeedIncrement; // Увеличение скорости падения яиц
+
+        // Увеличение скорости падения каждые 10 очков
+        if (score > 0 && score % 10 === 0) {
+            eggFallSpeed += eggFallSpeedIncrement;
+        }
+
         requestAnimationFrame(updateEggs);
     }
 
@@ -110,5 +108,14 @@ document.addEventListener('DOMContentLoaded', function () {
             wolfLeft = window.innerWidth - wolf.offsetWidth;
         }
         wolf.style.left = wolfLeft + 'px';
+    }
+
+    // Функция для перемещения волка синхронно с пальцем
+    function moveWolfTo(positionX) {
+        if (positionX < 0) positionX = 0;
+        if (positionX > window.innerWidth - wolf.offsetWidth) {
+            positionX = window.innerWidth - wolf.offsetWidth;
+        }
+        wolf.style.left = positionX + 'px';
     }
 });
