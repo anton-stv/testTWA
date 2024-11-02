@@ -1,36 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Game</title>
+    <title>Игра: Ловля Яиц</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; text-align: center; }
+        #game-container { margin: auto; width: 300px; }
+        
+    </style>
 </head>
 <body>
-    <h1>Simple Game</h1>
-    <button id="startButton">Start Game</button>
-    <div id="gameArea" style="display: none;">
-        <p>Game is running!</p>
-        <button id="endButton">End Game</button>
+    <div id="game-container">
+        <h1>Игра: Ловля Яиц</h1>
+        <div id="score">Очки: 0</div>
+        <div id="penalties">Штрафные очки: 0</div>
+        <div id="game-area">
+
+        </div>
+        <button id="gameA">Игра А</button>
+        <button id="gameB">Игра Б</button>
     </div>
-
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-
-        document.getElementById("startButton").onclick = function() {
-            document.getElementById("gameArea").style.display = "block";
-            this.style.display = "none"; // Скрыть кнопку "Start Game"
-            console.log("Game started!");
-        };
-
-        document.getElementById("endButton").onclick = function() {
-            alert("Game ended!");
-            tg.close(); // Закрыть Web App
-        };
-
-        tg.MainButton.text = "Close";
-        tg.MainButton.show();
-    </script>
+    <script src="game.js"></script>
 </body>
 </html>
