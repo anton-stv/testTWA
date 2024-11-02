@@ -4,6 +4,7 @@ let gameInterval;
 let gameMode = 'A'; // Игра A по умолчанию
 const gameArea = document.getElementById('game-area');
 const scoreDisplay = document.getElementById('score');
+let wolfPosition = 1; // Позиция Волка (0 - левый, 1 - средний, 2 - правый, 3 - самый правый)
 
 document.getElementById('startGame').addEventListener('click', () => {
     startGame('A');
@@ -11,6 +12,15 @@ document.getElementById('startGame').addEventListener('click', () => {
 
 document.getElementById('startGameB').addEventListener('click', () => {
     startGame('B');
+});
+
+// Обработчики для управления Волком
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') {
+        moveWolf(-1); // Влево
+    } else if (event.key === 'ArrowRight') {
+        moveWolf(1); // Вправо
+    }
 });
 
 function startGame(mode) {
@@ -36,7 +46,20 @@ function createWolf() {
     wolf.src = 'images/wolf.png'; // Укажите путь к изображению Волка
     wolf.alt = 'Волк';
     wolf.className = 'wolf';
+    wolf.style.left = '120px'; // Начальная позиция
     gameArea.appendChild(wolf);
+}
+
+// Функция для перемещения Волка
+function moveWolf(direction) {
+    const wolf = document.querySelector('.wolf');
+    if (direction === -1 && wolfPosition > 0) {
+        wolfPosition--; // Двигаем влево
+    } else if (direction === 1 && wolfPosition < (gameMode === 'A' ? 2 : 3)) {
+        wolfPosition++; // Двигаем вправо
+    }
+    // Обновляем позицию Волка на экране
+    wolf.style.left = `${(wolfPosition * 100) + 20}px`;
 }
 
 function createEgg() {
