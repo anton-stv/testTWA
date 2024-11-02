@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#gameContainer {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: #e6f0ff;
+    overflow: hidden;
+}
+
+#wolf {
+    position: absolute;
+    bottom: 10%;
+    left: 45%;
+    width: 80px;
+    height: 80px;
+    background: url('images/wolf.png') no-repeat center center;
+    background-size: contain;
+    transition: left 0.1s;
+}
+
+.egg {
+    position: absolute;
+    width: 30px;
+    height: 40px;
+    background: url('images/egg.png') no-repeat center center;
+    background-size: contain;
+}
+
+#score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+#startButton {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
