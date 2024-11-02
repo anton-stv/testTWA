@@ -4,18 +4,26 @@
     box-sizing: border-box;
 }
 
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Убираем прокрутку */
+    height: 100vh; /* Высота экрана для мобильных устройств */
+}
+
 #gameContainer {
     position: relative;
     width: 100vw;
-    height: 100vh;
-    background-color: #e6f0ff;
-    overflow: hidden;
+    height: 100vh; /* Занимает всю высоту экрана */
+    overflow: hidden; /* Убираем прокрутку внутри контейнера */
 }
 
-#wolf {
+.wolf {
+    width: 15%; /* Подгоняем размер волка под экран */
     position: absolute;
-    bottom: 10%;
-    left: 45%;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 80px;
     height: 80px;
     background: url('images/wolf.png') no-repeat center center;
@@ -24,7 +32,9 @@
 }
 
 .egg {
+    width: 5%; /* Подгоняем размер яйца под экран */
     position: absolute;
+    top: 0;
     width: 30px;
     height: 40px;
     background: url('images/egg.png') no-repeat center center;
